@@ -51,7 +51,7 @@ module OmniAuth
           params = {
             :method => 'users.getInfo',
             :app_id => options.client_id,
-            :session_id => access_token.token,
+            :session_key => access_token.token,
             :format => "json"
           }
           params[:sig] = calc_signature(params)
@@ -62,7 +62,7 @@ module OmniAuth
 
       def calc_signature(hash)
         raw = hash.map{|key, value| [key, value].join('=')}.sort.join
-        raw = [uid, raw, options.client_secret].join
+        raw = [uid, raw, options.private_key].join
         Digest::MD5.hexdigest(raw)
       end
 
